@@ -1,0 +1,10 @@
+
+/allure-report
+/allure-results
+/.idea
+/allure-results
+/locators/__pycache__
+/pages/__pycache__
+*.png
+/tests/__pycache__
+/utilities/__pycache__

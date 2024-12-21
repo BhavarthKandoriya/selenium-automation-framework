@@ -1,0 +1,43 @@
+import logging
+
+import pytest
+
+from utilities.common_utils import preserve_allure_history
+from utilities.webdriver_factory import WebDriverFactory
+
+logger = logging.getLogger(__name__)
+
+'''def pytest_sessionstart(session):
+    """Called before any tests are executed."""
+    preserve_allure_history()
+    print("Allure history has been preserved.")'''
+
+@pytest.fixture(scope="function")
+def setup_driver(request):
+    # Create an instance of WebDriverFactory
+    factory = WebDriverFactory()
+    # Get the WebDriver instance
+    driver = factory.get_webdriver()
+    # Set the driver in the request.cls attribute so it's accessible in the test class
+    request.cls.driver = driver
+
+    # Yield to allow the test class to execute
+    yield
+
+    # Teardown: Quit the driver
+    driver.quit()
+
+
+@pytest.fixture(scope="function")
+def driver():
+    """Fixture to set up and tear down the WebDriver."""
+    # Create an instance of WebDriverFactory
+    factory = WebDriverFactory()
+    # Get the WebDriver instance
+    driver = factory.get_webdriver()
+
+    # Yield the driver to the test function
+    yield driver
+
+    # Teardown: Quit the driver
+    driver.quit()
