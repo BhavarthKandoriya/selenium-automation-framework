@@ -28,10 +28,15 @@ def setup_driver(request):
     driver.quit()
 
 
-@pytest.fixture(scope="function")
-def driver():
+@pytest.fixture(scope="function",params=["chrome", "firefox"])
+def driver(request):
     """Fixture to set up and tear down the WebDriver."""
     # Create an instance of WebDriverFactory
+    # Get the browser parameter
+    browser = request.param
+    # Override the BROWSER environment variable
+    import os
+    os.environ["BROWSER"] = browser
     factory = WebDriverFactory()
     # Get the WebDriver instance
     driver = factory.get_webdriver()

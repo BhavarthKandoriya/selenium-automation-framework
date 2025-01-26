@@ -14,6 +14,7 @@ class WebDriverFactory:
         load_dotenv()
         # Get the browser type from environment variables
         self.browser = os.getenv('BROWSER').lower()
+        self.grid_url = 'http://localhost:4444/wd/hub'
 
     def get_webdriver(self):
         """Get the appropriate WebDriver based on the browser specified in the .env file."""
@@ -31,8 +32,11 @@ class WebDriverFactory:
         chrome_options = ChromeOptions()
         # Set Chrome options if needed
         chrome_options.add_argument('--headless')  # Example option
-        # You may specify the path to the ChromeDriver executable if not in PATH
-        #chrome_service = ChromeService(executable_path='/path/to/chromedriver')
+        if os.getenv('BROWSER').lower() == 'remote':
+            return webdriver.Remote(
+                command_executor=self.grid_url,
+                options=chrome_options
+            )
         return webdriver.Chrome()
 
     def _get_firefox_driver(self):
@@ -40,9 +44,12 @@ class WebDriverFactory:
         firefox_options = FirefoxOptions()
         # Set Firefox options if needed
         firefox_options.add_argument('--headless')  # Example option
-        # You may specify the path to the GeckoDriver executable if not in PATH
-        firefox_service = FirefoxService(executable_path='/path/to/geckodriver')
-        return webdriver.Firefox(service=firefox_service, options=firefox_options)
+        if os.getenv('BROWSER').lower() == 'remote':
+            return webdriver.Remote(
+                command_executor=self.grid_url,
+                options=firefox_options
+            )
+        return webdriver.Firefox()
 
     def _get_edge_driver(self):
         """Create an Edge WebDriver instance."""
