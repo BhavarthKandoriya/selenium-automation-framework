@@ -205,6 +205,15 @@ To add a locator for a new element on a page:
 ## Logging and Monitoring
 
 * **File Logging:** All test execution logs are appended to `app.log` in the project root directory. 
-* **Elastic Stack:** If configured in the `.env` file, logs and potentially test result summaries are sent to the specified Elasticsearch instance. This allows for creating Kibana dashboards to visualize test trends, failure rates, execution times, and perform detailed log analysis across multiple runs. The `utilities/elasticsearch_utils.py` module handles the connection and data ingestion logic. 
+* **Elastic Stack:** If configured in the `.env` file, logs and potentially test result summaries are sent to the specified Elasticsearch instance. This allows for creating Kibana dashboards to visualize test trends, failure rates, execution times, and perform detailed log analysis across multiple runs. The `utilities/elasticsearch_utils.py` module handles the connection and data ingestion logic.
+
+## Dashboards and Reportin
+**Failed Testcases dashboard - Kibana**
+
+![Failed Tests](./assets/dashboard1.png "Failed Test cases")
+
+**Execution status and Report by error type - Kibana**
+
+![Execution Status](./assets/dashboard2.png "Execution Status")
 
 ---
