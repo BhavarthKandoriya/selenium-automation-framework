@@ -1,6 +1,8 @@
 import logging
+import os
 
 import pytest
+from dotenv import load_dotenv
 
 from utilities.common_utils import preserve_allure_history
 from utilities.webdriver_factory import WebDriverFactory
@@ -11,6 +13,15 @@ logger = logging.getLogger(__name__)
     """Called before any tests are executed."""
     preserve_allure_history()
     print("Allure history has been preserved.")'''
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--env",
+        action="store",
+        default="dev",
+        help="Environment to run tests against (e.g., dev, qa)"
+    )
 
 @pytest.fixture(scope="function")
 def setup_driver(request):
@@ -28,7 +39,7 @@ def setup_driver(request):
     driver.quit()
 
 
-@pytest.fixture(scope="function",params=["chrome", "firefox"])
+@pytest.fixture(scope="function", params=["chrome", "firefox"])
 def driver(request):
     """Fixture to set up and tear down the WebDriver."""
     # Create an instance of WebDriverFactory
@@ -46,3 +57,14 @@ def driver(request):
 
     # Teardown: Quit the driver
     driver.quit()
+
+@pytest.fixture(scope="session", autouse=True)
+def load_env_file(request):
+    env_name = request.config.getoption("--env")
+    env_file = f".env.{env_name}"
+
+    if os.path.exists(env_file):
+        load_dotenv(dotenv_path=env_file)
+        print(f"[INFO] Loaded environment variables from {env_file}")
+    else:
+        raise FileNotFoundError(f"[ERROR] Environment file '{env_file}' not found.")

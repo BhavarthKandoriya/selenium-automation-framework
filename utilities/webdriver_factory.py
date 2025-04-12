@@ -10,14 +10,14 @@ from dotenv import load_dotenv
 
 class WebDriverFactory:
     def __init__(self):
-        # Load environment variables from .env file
+        # Load environment variables from .env.staging file
         load_dotenv()
         # Get the browser type from environment variables
         self.browser = os.getenv('BROWSER').lower()
         self.grid_url = 'http://localhost:4444/wd/hub'
 
     def get_webdriver(self):
-        """Get the appropriate WebDriver based on the browser specified in the .env file."""
+        """Get the appropriate WebDriver based on the browser specified in the .env.staging file."""
         if self.browser == 'chrome':
             return self._get_chrome_driver()
         elif self.browser == 'firefox':

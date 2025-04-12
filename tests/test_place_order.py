@@ -15,7 +15,7 @@ es_utility = ElasticSearchUtility(index_name="automation-logs")
 @allure.severity(allure.severity_level.CRITICAL)
 def test_place_order(driver, request):
     """Test case to place an order and validate the success message."""
-    load_dotenv()  # Load environment variables from .env file
+    load_dotenv()  # Load environment variables from .env.staging file
 
     with allure.step("Step 1: Navigate to the login page"):
         logger.info("Navigating to the login page.")
